@@ -37,6 +37,7 @@ public class CriptomonedasAPI{
             }
         } catch (Exception e) { // Captura cualquier excepción
             e.printStackTrace();
+            System.out.println("Error de lectura de URL");
         }
     }
 
@@ -45,12 +46,12 @@ public class CriptomonedasAPI{
             leerUrl();
             JSONParser parse = new JSONParser(); // Crear un parser para el JSON
             data_arr = (JSONArray) parse.parse(inline); // Parsear la string de la API a un array JSON
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ec) {
+            System.out.println("Error de lectura de JSON");
         }
     }
 
-    public void mostrarID(){
+    public void mostrarTodasID(){
         leerJSON();
         if (data_arr != null) { // Comprueba si data_arr es null (por algún fallo de conexión con la API)
             // Recorre cada elemento del array JSON
@@ -63,13 +64,15 @@ public class CriptomonedasAPI{
         }
     }
 
-    public void mostrarPrimeraID(){
+    public String mostrarID(int elemento){
         leerJSON();
-        if (data_arr != null) { // Comprueba si data_arr es null o está vacío
-            JSONObject criptomoneda = (JSONObject) data_arr.get(0); // Obtiene el primer elemento del array JSON
-            System.out.println(criptomoneda.get("id")); // Imprime el id de la criptomoneda
+        if (data_arr != null && !data_arr.isEmpty()) { // Comprueba si data_arr es null o está vacío
+            JSONObject criptomoneda = (JSONObject) data_arr.get(elemento); // Obtiene el primer elemento del array JSON
+            String nombre = (String) criptomoneda.get("id"); // Obtiene la id
+            return nombre;
         } else {
             System.out.println("No se pudo obtener datos de la API");
+            return null;
         }
     }
 
